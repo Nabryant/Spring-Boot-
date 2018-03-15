@@ -1,8 +1,8 @@
 package com.example.chapter327;
 
+import com.example.chapter327.Service.Dom4jBuildXmlDemo;
+import com.example.chapter327.mapper.FeedMapper;
 import com.example.chapter327.mapper.UserMapper;
-import com.example.chapter327.model.User;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +19,28 @@ public class Chapter327ApplicationTests {
 	@Autowired
 	private UserMapper userMapper;
 
+	@Autowired
+	private FeedMapper feedMapper;
+
+	@Autowired
+	private Dom4jBuildXmlDemo dom4jBuildXmlDemo;
+
 	@Test
 	@Rollback
 	public void contextLoads() throws Exception{
 
-		userMapper.insert("AAA", 20);
-		User user = userMapper.findByName("AAA");
-		Assert.assertEquals("20", user.getAge());
-		System.out.println(user.getAge());
+//		userMapper.insert("AAA", 20);
+//		User user = userMapper.findByName("AAA");
+//		Assert.assertEquals("20", user.getAge());
+//		System.out.println(user.getAge());
+
+		//List<FeedEntity> feedList = feedMapper.findByReview((short)0);
+		//Long id = feedList.get(0).getId();
+		//int i = feedList.size();
+		//System.out.println(i);
+		//System.out.println(id);
+
+		dom4jBuildXmlDemo.buildXml();
 
 	}
 

@@ -1,5 +1,6 @@
 package com.nabryant.web;
 
+import com.nabryant.exception.MyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,4 +22,17 @@ public class HelloController {
         //return模板文件名，对应index.html
         return "index";
     }
+
+    @RequestMapping("/hello")
+    public  String hello(ModelMap map) throws Exception{
+        throw new  Exception("e");
+
+    }
+
+    @RequestMapping("/json")
+    public String json() throws Exception {
+        throw new MyException("222");
+    }
+
+
 }

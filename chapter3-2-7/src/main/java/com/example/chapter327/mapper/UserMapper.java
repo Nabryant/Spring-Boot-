@@ -1,10 +1,13 @@
 package com.example.chapter327.mapper;
 
+import com.example.chapter327.model.FeedEntity;
 import com.example.chapter327.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface UserMapper {
@@ -25,4 +28,7 @@ public interface UserMapper {
 
     @Select("select * from user where name = #{name}")
     User findByName (@Param("name") String name);
+
+
+
 }
