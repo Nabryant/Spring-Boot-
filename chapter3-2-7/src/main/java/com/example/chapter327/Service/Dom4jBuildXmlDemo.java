@@ -9,9 +9,11 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -28,8 +30,8 @@ import java.util.TimerTask;
  * Function:
  */
 
-@Service
-public class Dom4jBuildXmlDemo extends TimerTask{
+@Component
+public class Dom4jBuildXmlDemo extends TimerTask implements ApplicationContextAware{
 
     private static final String ROOT_ELEMENT = "urlset";
     private static final String URL_ELEMENT = "url";
@@ -44,10 +46,19 @@ public class Dom4jBuildXmlDemo extends TimerTask{
     private String detailPriority = "0.8";
 
     @Autowired
-    FeedMapper feedMapper;
+    private FeedMapper feedMapper;
 
     @Autowired
-    FeedChannelMapper feedChannelMapper;
+    private FeedChannelMapper feedChannelMapper;
+
+    private static ApplicationContext applicationContext = null;
+
+    @Override
+    public void setApplicationContext (ApplicationContext context) throws BeansException {
+        if (applicationContext == null) {
+            applicationContext = context;
+        }
+    }
 
     @Override
     public void run() {
@@ -80,13 +91,11 @@ public class Dom4jBuildXmlDemo extends TimerTask{
         }
 
         return urlList;
-
     }
 
     public String generateHomeURL () {
 
         return "live.sohu.com/zhidao/index";
-
     }
 
     public void formatXMLFile (OutputFormat format) {
@@ -101,7 +110,6 @@ public class Dom4jBuildXmlDemo extends TimerTask{
         //设置换行
         format.setNewlines(true);
 
-
     }
 
     public void buildXml() {
@@ -114,7 +122,6 @@ public class Dom4jBuildXmlDemo extends TimerTask{
             Element rootElement = document.addElement(ROOT_ELEMENT, "http://www.sitemaps.org/schemas/sitemap/0.9");
 
             //可以继续添加子节点 也可指定内容
-
             Element urlElement = rootElement.addElement(URL_ELEMENT);
 
             String homeUrl = generateHomeURL();
@@ -122,7 +129,7 @@ public class Dom4jBuildXmlDemo extends TimerTask{
             loc.setText(homeUrl);
 
             Date dateMod = new Date();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Element lastMod = urlElement.addElement(LASTMOD_ELEMENT);
             lastMod.setText(simpleDateFormat.format(dateMod));
 
